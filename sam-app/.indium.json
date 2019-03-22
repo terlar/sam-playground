@@ -1,0 +1,23 @@
+{
+  "configurations": [
+    {
+      "name": "default",
+      "type": "node",
+      "command": "node -r ts-node/register",
+      "inspect-brk": false
+    },
+    {
+      "name": "api",
+      "type": "node",
+      "command": "../bin/start-api -d 5858",
+      "port": 5858,
+      "root": "hello-world",
+      "sourceMapPathOverrides": {
+        "/var/task/": "${root}/"
+      },
+      "scriptPathOverrides": {
+        "/var/task/(.*)": "${root}/$1"
+      }
+    }
+  ]
+}

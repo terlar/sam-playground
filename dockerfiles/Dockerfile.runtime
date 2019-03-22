@@ -1,0 +1,5 @@
+FROM lambci/lambda:build-nodejs8.10
+
+ENV PATH /var/task/bin:$PATH
+
+CMD ["sleep", "infinity"]

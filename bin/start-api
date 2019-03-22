@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+[ "${TRACE}" ] && set -o xtrace
+set -o errexit -o nounset
+
+SCRIPT_PATH="$(cd "$(dirname "$0")"; pwd -P)"
+SAM="${SCRIPT_PATH}/sam"
+
+main() {
+    exec "${SAM}" local start-api \
+        --region eu-west-1 \
+        --env-vars .env-sam.json \
+        --docker-volume-basedir "${PWD}/sam-app" \
+        --host 0.0.0.0 \
+        "$@"
+}
+
+main "$@"

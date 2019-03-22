@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+
+[ "${TRACE}" ] && set -o xtrace
+set -o errexit -o nounset
+
+SCRIPT_PATH="$(cd "$(dirname "$0")"; pwd -P)"
+DOCKER_RUNNER="${SCRIPT_PATH}/docker-runner"
+
+main() {
+  cmd_name="${0##*/}"
+
+  export DOCKER_RUNNER_NAME=runtime
+
+  if [ "${cmd_name}" = "run-with-runtime" ]
+  then
+    exec "${DOCKER_RUNNER}" "$@"
+  else
+    exec "${DOCKER_RUNNER}" "${cmd_name}" "$@"
+  fi
+}
+
+main "$@"

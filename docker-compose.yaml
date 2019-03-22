@@ -1,0 +1,20 @@
+---
+version: '3.5'
+services:
+  runtime:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.runtime
+    volumes:
+      - ./sam-app:/var/task
+
+  tools:
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile.tools
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./sam-app:/var/opt:ro
+      - ~/.aws/credentials:/root/.aws/credentials:ro
+    ports:
+      - 3000
