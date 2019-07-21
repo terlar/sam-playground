@@ -2,7 +2,7 @@ with (import <nixpkgs> {});
 with pkgs.nodePackages;
 
 let
-  nodejs = nodejs-8_x;
+  nodejs = nodejs-10_x;
 in mkShell {
   buildInputs = [
     indium

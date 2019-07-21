@@ -1,12 +1,12 @@
 ---
-version: '3.5'
+version: "3.5"
 services:
   runtime:
     build:
       context: .
       dockerfile: dockerfiles/Dockerfile.runtime
     volumes:
-      - ./sam-app:/var/task
+      - ./app:/var/task
 
   tools:
     build:
@@ -14,7 +14,10 @@ services:
       dockerfile: Dockerfile.tools
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./sam-app:/var/opt:ro
-      - ~/.aws/credentials:/root/.aws/credentials:ro
+      - ./app:/var/opt/app:ro,delegated
+      - ~/.aws/credentials:/home/.aws/credentials:ro
     ports:
       - 3000
+    environment:
+      - AWS_ACCESS_KEY_ID=NONE
+      - AWS_SECRET_ACCESS_KEY=NONE

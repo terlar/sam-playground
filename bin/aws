@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+[ "${TRACE}" ] && set -o xtrace
+set -o errexit -o nounset
+
+SCRIPT_PATH="$(cd "$(dirname "$0")"; pwd -P)"
+RUNNER="${SCRIPT_PATH}/docker-runner"
+
+main() {
+    export RUNNER_EXPORT_VARS=AWS_REGION:AWS_DEFAULT_REGION:AWS_PROFILE:AWS_ACCESS_KEY_ID:AWS_SECRET_ACCESS_KEY
+    exec "${RUNNER}" aws "$@"
+}
+
+main "$@"

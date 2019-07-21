@@ -1,0 +1,49 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug HelloWorld API",
+            "runtimeExecutable": "${workspaceFolder}/bin/start-api",
+            "runtimeArgs": [
+                "-d",
+                "5858"
+            ],
+            "port": 5858,
+            "localRoot": "${workspaceFolder}/app/hello-world",
+            "remoteRoot": "/var/task",
+            "protocol": "inspector",
+            "stopOnEntry": false,
+            "timeout": 300000
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug HelloWorld",
+            "runtimeExecutable": "${workspaceFolder}/bin/invoke",
+            "runtimeArgs": [
+                "-d",
+                "5858",
+                "-e",
+                "event.json",
+                "HelloWorldFunction"
+            ],
+            "port": 5858,
+            "localRoot": "${workspaceFolder}/app/hello-world",
+            "remoteRoot": "/var/task",
+            "protocol": "inspector",
+            "stopOnEntry": false
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to HelloWorld",
+            "port": 5858,
+            "localRoot": "${workspaceFolder}/app/hello-world",
+            "remoteRoot": "/var/task",
+            "protocol": "inspector",
+            "stopOnEntry": false
+        }
+    ]
+}

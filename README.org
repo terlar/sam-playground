@@ -1,0 +1,14 @@
+#+TITLE: sam-playground
+* What is this?
+  This is a playground to try out a fully dockerized development workflow with AWS SAM.
+  For now it is JavaScript, soon, TypeScript and in the future potentially several
+  different languages for different components.
+
+* Debugging
+** Invoke
+   - Run =bin/invoke -d 5858 -e event.json HelloWorldFunction=
+   - Connect to the debug port on =5858=
+** API
+   - Run =bin/start-api -d 5858=
+   - Run =bin/http :3000/hello=
+   - Connect to the debug port on =5858=

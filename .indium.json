@@ -1,0 +1,13 @@
+{
+  "configurations": [
+    {
+      "name": "hello-world",
+      "type": "node",
+      "port": 5858,
+      "root": "app/hello-world",
+      "scriptPathOverrides": {
+        "/var/task/(.*)": "$1"
+      }
+    }
+  ]
+}

@@ -1,20 +1,25 @@
-FROM alpine:3.9
+FROM alpine:latest
 
-ENV AWS_VERSION 1.16.10
-ENV SAM_VERSION 0.13.0
+ENV AWS_VERSION 1.16.201
+ENV SAM_VERSION 0.18.0
+ENV CFNLINT_VERSION 0.22.3
 
-# py-pip or rather the python environment that comes with it is required for SAM.
 RUN apk add --no-cache groff python3 \
-  && apk add --no-cache --virtual build-dependencies gcc musl-dev python3-dev \
-  && pip3 install aws-sam-cli==${SAM_VERSION} \
-  && pip3 install awscli==${AWS_VERSION} \
-  && pip3 install cfn-lint \
-  && pip3 install httpie \
-  && apk del build-dependencies
+    && apk add --no-cache --virtual build-dependencies gcc musl-dev python3-dev \
+    && pip3 install --upgrade pip \
+    && pip3 install aws-sam-cli==${SAM_VERSION} \
+    && pip3 install awscli==${AWS_VERSION} \
+    && pip3 install cfn-lint==${CFNLINT_VERSION} \
+    && pip3 install httpie \
+    && apk del build-dependencies
 
+ENV HOME /home
 ENV PAGER more
 ENV PATH /var/opt/scripts:$PATH
 
-WORKDIR /var/opt
+RUN mkdir -p ${HOME} && chmod 777 ${HOME}
+
+VOLUME /var/opt/app
+WORKDIR /var/opt/app
 EXPOSE 3000
-CMD ["sh", "-c", "while sleep 3600; do :; done"]
+CMD ["sh", "-c", "while sleep 3600; do true; done"]

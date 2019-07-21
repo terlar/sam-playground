@@ -1,0 +1,80 @@
+#!/usr/bin/env sh
+
+[ "${TRACE}" ] && set -o xtrace
+set -o errexit -o nounset
+
+SCRIPT_PATH="$(cd "$(dirname "$0")"; pwd -P)"
+RUNNER_NAME=${DOCKER_RUNNER_NAME:-tools}
+RUNNER_ID_CACHE="${SCRIPT_PATH}/../tmp/docker-runner-${RUNNER_NAME}-id"
+RUNNER_EXPORT_VARS=${RUNNER_EXPORT_VARS:-'JEST_JUNIT_OUTPUT:JEST_JUNIT_CLASSNAME:JEST_JUNIT_TITLE:NODE_EXTRA_CA_CERTS'}
+
+runner_id() {
+  cat "${RUNNER_ID_CACHE}"
+}
+
+cache_runner_id() {
+  [ -d tmp ] || mkdir tmp
+  docker-compose ps -q "${RUNNER_NAME}" > "${RUNNER_ID_CACHE}"
+}
+
+has_runner_id_cache() {
+  [ -f "${RUNNER_ID_CACHE}" ]
+}
+
+has_runner() {
+  if has_runner_id_cache
+  then
+    docker ps -qf id="$(runner_id)" | grep -qv '^$'
+  else
+    docker-compose ps --services --filter status=running | grep -q "${RUNNER_NAME}"
+  fi
+}
+
+start_runner() {
+  # Always ensure we build the latest version.
+  docker-compose up --build -d "${RUNNER_NAME}"
+
+  # Invalidate cache when starting a new runner.
+  if has_runner_id_cache
+  then
+    rm "${RUNNER_ID_CACHE}"
+  fi
+}
+
+exec_runner() {
+  if is_interactive
+  then
+    tty_opts='-t'
+  fi
+
+  env_opts=''
+  for env_var in $(echo "${RUNNER_EXPORT_VARS}" | tr ':' '\n')
+  do
+    env_opts="${env_opts} -e${env_var}"
+  done
+
+  [ -n "${RUNNER_WORKDIR:-}" ] && workdir_opt="-w${RUNNER_WORKDIR}"
+
+  # shellcheck disable=SC2086
+  exec docker exec -i ${tty_opts:-} ${env_opts} ${workdir_opt:-} -uroot "$(runner_id)" "$@"
+}
+
+is_interactive() {
+  [ -t 1 ] && [ -t 0 ]
+}
+
+main() {
+  cmd_name="${0##*/}"
+
+  has_runner || start_runner
+  has_runner_id_cache || cache_runner_id
+
+  if [ "${cmd_name}" = "docker-runner" ]
+  then
+    exec_runner "$@"
+  else
+    exec_runner "${cmd_name}" "$@"
+  fi
+}
+
+main "$@"

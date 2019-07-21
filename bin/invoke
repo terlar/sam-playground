@@ -7,10 +7,9 @@ SCRIPT_PATH="$(cd "$(dirname "$0")"; pwd -P)"
 SAM="${SCRIPT_PATH}/sam"
 
 main() {
-    exec "${SAM}" local start-api \
+    exec "${SAM}" local invoke \
         --docker-volume-basedir "${PWD}/app" \
         --env-vars env-vars.json \
-        --host 0.0.0.0 \
         "$@"
 }
 
