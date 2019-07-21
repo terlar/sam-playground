@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "build:watch": "npm run build -- --watch",
+    "lint": "eslint --cache '**/*.ts'",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "mocha --require ts-node/register/transpile-only tests/unit/",
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.30",
+    "@types/chai": "^4.1.7",
+    "@types/lodash": "^4.14.136",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.6.8",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "chai": "^4.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint_d": "^8.0.0",
+    "lodash": "^4.17.15",
+    "mocha": "^6.1.4",
+    "prettier": "^1.18.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  }
+}
