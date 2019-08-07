@@ -12,3 +12,27 @@
    - Run =bin/start-api -d 5858=
    - Run =bin/http :3000/hello=
    - Connect to the debug port on =5858=
+
+* Roadmap
+** DevOps
+*** AWS accounts/permissions/policies e.t.c.
+*** Deployment
+*** Build
+*** TDD/Unit/Integration/Acceptance
+*** Pre traffic hooks
+
+** API
+*** JSON schema validation
+*** Inject logger
+*** Middleware stack
+*** Side effect calculation
+*** Reduce final state/outcome
+
+** Event Sourcing
+*** DynamoDB streams
+
+** Apply business logic
+*** In-memory to reply before event propagates
+*** Async apply to reflect new state
+
+** "Log"-based testing
